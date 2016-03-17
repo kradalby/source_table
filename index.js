@@ -20,26 +20,13 @@ let servers = [
 let source_table = (function () {
   // API URL
   const BASE_URL = 'https://source.fap.no/api/v1'
-  const TIMEOUT = 3000
+  const TIMEOUT = 5000
 
   // Datastore
   let servers = []
 
   // HTML elements
   let entry_div = document.getElementById('source_table')
-  console.log(entry_div)
-
-  let poll_server = function (server) {
-    let payload = {data: server}
-    console.log(payload)
-    let promise = ajax.post(BASE_URL + '/all', payload)
-    promise.then(function (response) {
-      let parsed_response = JSON.parse(response)
-      let server_info = parsed_response.data[server]
-      console.log(server_info)
-      update_row(server, server_info)
-    })
-  }
 
   let get_row_by_server_id = function (table, server_id) {
     for (let i = 0; i < table.children.length; i++) {
@@ -77,6 +64,17 @@ let source_table = (function () {
     entry_div.appendChild(table)
   }
 
+  let poll_server = function (server) {
+    // console.log(`Polling server: ${server} at `, Date.now())
+    let payload = {data: server}
+    let promise = ajax.post(BASE_URL + '/all', payload)
+    promise.then(function (response) {
+      let parsed_response = JSON.parse(response)
+      let server_info = parsed_response.data[server]
+      update_row(server, server_info)
+    })
+  }
+
   let update_row = function (server_id, server_info) {
     let table = entry_div.firstChild
 
@@ -109,7 +107,7 @@ let source_table = (function () {
       table.appendChild(row)
     }
     setTimeout(function () {
-      update_row(server_id, server_info)
+      poll_server(server_id)
     }, TIMEOUT)
   }
 

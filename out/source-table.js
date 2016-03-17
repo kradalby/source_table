@@ -65,26 +65,13 @@ var servers = ['193.202.115.74:27115', '193.202.115.74:27117', '193.202.115.74:2
 var source_table = function () {
   // API URL
   var BASE_URL = 'https://source.fap.no/api/v1';
-  var TIMEOUT = 3000;
+  var TIMEOUT = 5000;
 
   // Datastore
   var servers = [];
 
   // HTML elements
   var entry_div = document.getElementById('source_table');
-  console.log(entry_div);
-
-  var poll_server = function poll_server(server) {
-    var payload = { data: server };
-    console.log(payload);
-    var promise = ajax.post(BASE_URL + '/all', payload);
-    promise.then(function (response) {
-      var parsed_response = JSON.parse(response);
-      var server_info = parsed_response.data[server];
-      console.log(server_info);
-      update_row(server, server_info);
-    });
-  };
 
   var get_row_by_server_id = function get_row_by_server_id(table, server_id) {
     for (var i = 0; i < table.children.length; i++) {
@@ -122,6 +109,17 @@ var source_table = function () {
     entry_div.appendChild(table);
   };
 
+  var poll_server = function poll_server(server) {
+    // console.log(`Polling server: ${server} at `, Date.now())
+    var payload = { data: server };
+    var promise = ajax.post(BASE_URL + '/all', payload);
+    promise.then(function (response) {
+      var parsed_response = JSON.parse(response);
+      var server_info = parsed_response.data[server];
+      update_row(server, server_info);
+    });
+  };
+
   var update_row = function update_row(server_id, server_info) {
     var table = entry_div.firstChild;
 
@@ -154,7 +152,7 @@ var source_table = function () {
       table.appendChild(row);
     }
     setTimeout(function () {
-      update_row(server_id, server_info);
+      poll_server(server_id);
     }, TIMEOUT);
   };
 
