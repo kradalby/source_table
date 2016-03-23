@@ -3,10 +3,14 @@
 Display live stats from Source engine servers as a html table
 
 ## Usage
+
+Download the script from here:
+https://github.com/kradalby/source_table/raw/master/out/source-table.js
+
 Inside the body, add the following:
 
     <div id="source_table"></div>
-    <script src="https://raw.githubusercontent.com/kradalby/source_table/master/out/source-table.js"></script>
+    <script src="source-table.js"></script>
     <script>
     var servers = [
       '193.202.115.74:27115',
