@@ -3,7 +3,7 @@ let ajax = require('./ajax').default
 
 let source_table = (function () {
   // API URL
-  const BASE_URL = 'http://127.0.0.1:5000/api/v1'
+  const BASE_URL = 'https://source.fap.no/api/v1'
   const TIMEOUT = 5000
 
   // Datastore
