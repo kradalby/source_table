@@ -1,5 +1,5 @@
 'use strict'
-let ajax = require('./ajax').default
+let ajax = require('./ajax')
 
 let source_table = (function () {
   // API URL
