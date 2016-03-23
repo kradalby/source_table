@@ -19,7 +19,7 @@ let servers = [
 
 let source_table = (function () {
   // API URL
-  const BASE_URL = 'https://source.fap.no/api/v1'
+  const BASE_URL = 'http://127.0.0.1:5000/api/v1'
   const TIMEOUT = 5000
 
   // Datastore
@@ -36,6 +36,26 @@ let source_table = (function () {
       }
     }
     return null
+  }
+
+  let insert_in_order = function (table, new_row) {
+    let new_name = new_row.children[0].innerHTML
+    console.log('insert')
+
+    if (table.children.length === 1) {
+      console.log('adding first child')
+      table.appendChild(new_row)
+      return
+    }
+    for (let i = 1; i < table.children.length; i++) {
+      let current_row = table.children[i]
+      let current_name = current_row.children[0].innerHTML
+      if (new_name < current_name) {
+        table.insertBefore(new_row, current_row)
+        return
+      }
+    }
+    table.appendChild(new_row)
   }
 
   let initialize_table = function () {
@@ -104,7 +124,8 @@ let source_table = (function () {
     if (existing_row) {
       table.replaceChild(row, existing_row)
     } else {
-      table.appendChild(row)
+      // table.appendChild(row)
+      insert_in_order(table, row)
     }
     setTimeout(function () {
       poll_server(server_id)

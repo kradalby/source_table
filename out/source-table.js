@@ -64,7 +64,7 @@ var servers = ['193.202.115.74:27115', '193.202.115.74:27117', '193.202.115.74:2
 
 var source_table = function () {
   // API URL
-  var BASE_URL = 'https://source.fap.no/api/v1';
+  var BASE_URL = 'http://127.0.0.1:5000/api/v1';
   var TIMEOUT = 5000;
 
   // Datastore
@@ -81,6 +81,26 @@ var source_table = function () {
       }
     }
     return null;
+  };
+
+  var insert_in_order = function insert_in_order(table, new_row) {
+    var new_name = new_row.children[0].innerHTML;
+    console.log('insert');
+
+    if (table.children.length === 1) {
+      console.log('adding first child');
+      table.appendChild(new_row);
+      return;
+    }
+    for (var i = 1; i < table.children.length; i++) {
+      var current_row = table.children[i];
+      var current_name = current_row.children[0].innerHTML;
+      if (new_name < current_name) {
+        table.insertBefore(new_row, current_row);
+        return;
+      }
+    }
+    table.appendChild(new_row);
   };
 
   var initialize_table = function initialize_table() {
@@ -149,7 +169,8 @@ var source_table = function () {
     if (existing_row) {
       table.replaceChild(row, existing_row);
     } else {
-      table.appendChild(row);
+      // table.appendChild(row)
+      insert_in_order(table, row);
     }
     setTimeout(function () {
       poll_server(server_id);
