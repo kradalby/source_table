@@ -6,9 +6,12 @@ build.css:
 	autoprefixer static/css/bundle.css
 
 build.js:
-	browserify index.js | uglifyjs -c > out/source-table.js
+	browserify src/index.js | uglifyjs -c > out/source-table.js
 
 build.js.debug:
-	browserify index.js > out/source-table.js
+	browserify src/index.js > out/source-table.js
+
+watch:
+	watchman-make -p 'src/*.js' 'Makefile' -t build.js
 
 build: build.js build.css

@@ -2,7 +2,7 @@
 'use strict'
 
 let Ajax = (function () {
-  let get = function (url: string): Promise {
+  let get = function (url) {
     return new Promise(function (resolve, reject) {
       let request = new XMLHttpRequest()
       request.open('GET', url)
@@ -22,7 +22,7 @@ let Ajax = (function () {
     })
   }
 
-  let post = function (url: string, data: JSON): Promise {
+  let post = function (url, data) {
     return new Promise(function (resolve, reject) {
       let request = new XMLHttpRequest()
       request.open('POST', url)
