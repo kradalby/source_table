@@ -1,4 +1,3 @@
-'use strict'
 let ajax = require('./ajax')
 
 let source_table = (function () {
@@ -120,7 +119,7 @@ let source_table = (function () {
     servers = server_list
     entry_div.innerHTML = ''
     initialize_table()
-    servers.forEach(server => {
+    servers.forEach((server) => {
       poll_server(server)
     })
   }
